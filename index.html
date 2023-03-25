@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lesson 26</title>
+  </head>
+  <body>
+    <script>
+      // Task 1
+
+      const car = {
+        type: "electric",
+        wheels: 4,
+      };
+
+      const sportCar = {
+        doors: 2,
+      };
+
+      Object.setPrototypeOf(sportCar, car);
+
+      const passengerCar = Object.create(car);
+      passengerCar.doors = 4;
+
+      const toyCar = Object.create(sportCar, {
+        type: {
+          value: "toy",
+          writable: true,
+          enumerable: true,
+          configurable: true,
+        },
+      });
+
+      // Task 2
+
+      const employees = {
+        wallet: {},
+        pay(munth, sum) {
+          this.wallet[munth] = sum;
+        },
+      };
+
+      const frontendDeveloper = {
+        name: "Mike",
+      };
+      Object.setPrototypeOf(frontendDeveloper, employees);
+      frontendDeveloper.wallet = {};
+
+      const backendDeveloper = {
+        name: "Bob",
+      };
+      Object.setPrototypeOf(backendDeveloper, employees);
+      backendDeveloper.pay("june", 1500);
+
+      console.log(backendDeveloper.wallet.june);
+      console.log(frontendDeveloper.wallet.june);
+
+      // Task 3
+
+      function User(name, age) {
+        this.name = name;
+        this.age = age;
+      }
+
+      const user_1 = new User("Mike", 18);
+
+      const user_2 = new user_1.constructor("Bob", 25);
+
+      console.log(user_1);
+      console.log(user_2);
+
+      //  Task 4
+
+      function UserType(name) {
+        for (let i = 0; i < name.length; ++i) {
+          this[i] = name[i];
+          if (i + 1 === name.length) {
+            Object.defineProperty(this, "length", {
+              enumerable: true,
+              writable: false,
+              configurable: true,
+              value: i + 1,
+            });
+          }
+        }
+        this.join = Array.prototype.join;
+      }
+
+      const admins = new UserType(["Mike", "Bob", "Nikola"]);
+
+      console.log(admins);
+      console.log(admins.join("; "));
+    </script>
+  </body>
+</html>
